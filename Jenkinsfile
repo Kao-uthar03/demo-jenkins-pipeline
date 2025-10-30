@@ -1,21 +1,21 @@
 pipeline {
-  agent {
-    docker { image 'install' }   
-  }
+  agent any
+  tools { nodejs 'install' }
+
   stages {
     stage('Install dependencies') {
       steps {
-        sh 'npm ci || npm install'
+        sh 'npm ci'
       }
     }
     stage('Run tests') {
       steps {
-        sh 'npm test'
+        sh 'npm test -- --ci'
       }
     }
   }
   post {
-    success { echo 'Tous les tests sont passés !' }
-    failure { echo 'Des tests ont échoué.' }
+    success { echo ' Tests OK' }
+    failure { echo ' Échec' }
   }
 }
